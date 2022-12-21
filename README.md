@@ -2,13 +2,14 @@
 
 > Streamlining the steps of deploy a jekyll blog requires manual input of many commands after cutting off nginx traffic and processes
 
+
 ## Documentation
 
-
+1.
 
 ## Install
 
-
+1.
 
 ## License
 
