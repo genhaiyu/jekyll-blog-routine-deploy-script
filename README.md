@@ -5,11 +5,16 @@
 
 ## Documentation
 
-1.
+Download the script in your blog directory, make sure the dir should have the `Gemfile`, which mean it is in the correct directory. 
+```markdown
+wget -N --no-check-certificate -q -O deploy.sh "https://raw.githubusercontent.com/genhaiyu/jekyll-blog-routine-deploy-script/master/deploy.sh" && chmod +x deploy.sh && bash deploy.sh
+```
 
 ## Install
 
-1.
+
+`rvm`, `ruby`, `nginx` will be automatically installed via script on the new server where the blog is deployed.
+
 
 ## License
 
