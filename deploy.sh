@@ -5,6 +5,9 @@ abort() {
   exit 1
 }
 
+Green="\033[32m"
+Black="\033[0m"
+
 OS="$(uname)"
 if [[ "${OS}" != "Linux" ]]; then
   abort "The script only support Linux currently."
@@ -12,6 +15,7 @@ fi
 
 check_dir() {
   if ! [[ -e "Gemfile" ]]; then
+    rm -rf Gemfile.lock
     abort "Please build this script in jekyll blog directory!"
   fi
 }
@@ -27,43 +31,33 @@ check_repository_status() {
 
 check_rvm_env() {
   if [ -d "/usr/local/rvm/" ]; then
-    echo "rvm has been installed"
+    echo -e "${Green} rvm has been installed. ${Green}"
   else
     # https://rvm.io/rvm/security#install-our-keys
     gpg2 --keyserver keys.openpgp.org --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
     curl -sSL https://get.rvm.io | bash -s stable
-    sleep 4
-    source /etc/profile.d/rvm.sh
   fi
   if [ -e "/usr/bin/ruby" ]; then
-    echo "ruby has been installed"
+    echo -e "${Green} ruby has been installed. ${Green}"
   else
     # $ rvm list known, depend on Gemfile compatibility
+    echo -e "${Green} Start installing ruby, it will take a few minutes. ${Green}"
     rvm install 3.0.0
     sleep 2
   fi
   jekyll="/usr/local/rvm/gems/ruby-3.0.0/bin/jekyll"
-  if [ -x "$jekyll" ]; then
-    echo "jekyll has been installed"
+  if [ -e "$jekyll" ]; then
+    echo -e "${Green} jekyll has been installed. ${Green}"
   else
     gem install jekyll bundler
-    sleep 3
   fi
-}
-
-old_site="_site/"
-last_time_generate() {
-  if [ -d ${old_site} ]; then
-    echo "The site generated last time was found."
-    rm -rf $old_site
-    echo "The site has been deleted."
-  fi
-  check_repository_status
+  source /etc/profile.d/rvm.sh
+  rvm use 3.0.0
 }
 
 check_nginx() {
   if [ -x "/usr/sbin/nginx" ]; then
-    echo "Nginx has been installed."
+    echo -e "${Green} Nginx has been installed. ${Green}"
   else
     sudo dnf install nginx
     sleep 4
@@ -74,27 +68,26 @@ check_nginx() {
     sudo systemctl start nginx
   fi
   rm -rf "/usr/share/nginx/html/*"
-  mv "$old_site"* /usr/share/nginx/html/
+  mv "_site/*" /usr/share/nginx/html/
   chcon -Rt httpd_sys_content_t /usr/share/nginx/html/
   sudo systemctl start nginx
 }
 
-# Assuming you has been install rvm and ruby env, before operate this function
 build_jekyll() {
-  echo "It will check ruby and rvm env, and then will install if not install."
-  echo "It will take some time to process."
+  echo -e "${Green} It will check ruby and rvm env, and then will install if not install. ${Green}"
+  echo -e "${Green} It will take some time to process. ${Green}"
   #  cd "$HOME"/"${PWD##*/}" || exit
   check_rvm_env
-  rvm use 3.0.0
-  last_time_generate
+  sleep 2
+  rm -rf "_site/"
   jekyll build --source "$HOME"/"${PWD##*/}"
   sleep 3
   if pgrep -x "nginx"; then
     sudo pkill -9 nginx
-    echo "The nginx process has been killed."
+    echo -e "${Green} The nginx process has been killed. ${Green}"
   fi
   check_nginx
-  echo "Jekyll blog has been deployed!"
+  echo -e "${Green} Jekyll blog has been deployed! ${Green}"
 }
 
 build_jekyll
