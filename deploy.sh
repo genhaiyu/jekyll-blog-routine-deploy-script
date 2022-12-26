@@ -83,6 +83,7 @@ build_jekyll() {
   sleep 2
   rm -rf "_site/"
   reload_source
+  check_repository_status
   jekyll build --source "$HOME"/"${PWD##*/}"
   sleep 3
   if pgrep -x "nginx"; then
