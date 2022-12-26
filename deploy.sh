@@ -40,7 +40,7 @@ check_repository_status() {
     sleep 2
     ;;
   *)
-    echo "Skip this update."
+    echo "User canceled git update, skipping."
     ;;
   esac
 }
