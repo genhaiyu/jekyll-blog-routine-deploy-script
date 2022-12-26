@@ -5,13 +5,12 @@
 
 ## Documentation
 
-Download the script in your blog directory, make sure the dir should have the `Gemfile`, which mean it is in the correct directory. 
+Download the script in blog directory where deployed on Linux, make sure the dir should have the `Gemfile`, which mean it is in the correct directory. 
 ```markdown
 wget -N --no-check-certificate -q -O deploy.sh "https://raw.githubusercontent.com/genhaiyu/jekyll-blog-routine-deploy-script/master/deploy.sh" && chmod +x deploy.sh && bash deploy.sh
 ```
 
-`rvm`, `ruby`, `nginx` will be automatically installed via script on the new server where the blog is deployed.
-
+The script automatically installs `rvm`, `ruby`, `nginx` these dependencies on the new server, otherwise it will only be updated routinely.
 
 ## License
 
