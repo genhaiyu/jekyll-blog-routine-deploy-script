@@ -31,26 +31,20 @@ check_repository_status() {
 }
 
 check_rvm_env() {
-  if [[ -d "/usr/local/rvm/" ]]; then
-    echo "RVM has been installed."
-  else
+  if ! [[ -d "/usr/local/rvm/" ]]; then
     # https://rvm.io/rvm/security#install-our-keys
     gpg2 --keyserver keys.openpgp.org --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
     curl -sSL https://get.rvm.io | bash -s stable
   fi
   reload_source
-  if [[ -e "/usr/bin/ruby" ]]; then
-    echo "Ruby has been installed."
-  else
+  if ! [[ -e "/usr/bin/ruby" ]]; then
     # $ rvm list known, depend on Gemfile compatibility
     echo "Start installing ruby, it will take a few minutes."
     rvm install ruby-3.0.0
     rvm use 3.0.0
   fi
   jekyll="/usr/local/rvm/gems/ruby-3.0.0/bin/jekyll"
-  if [[ -e "${jekyll}" ]]; then
-    echo "Jekyll has been installed."
-  else
+  if ! [[ -e "${jekyll}" ]]; then
     gem install jekyll bundler
     bundle clean --force
     bundle install
@@ -59,7 +53,7 @@ check_rvm_env() {
 
 check_nginx() {
   if [[ -x "/usr/sbin/nginx" ]]; then
-    echo "Nginx has been installed."
+    echo "It is detected that nginx has been installed, skip it."
   else
     sudo dnf install nginx
     sleep 4
@@ -69,7 +63,7 @@ check_nginx() {
     sudo firewall-cmd --reload
     sudo systemctl start nginx
   fi
-  rm -rf "/usr/share/nginx/html/*"
+  rm -rf /usr/share/nginx/html/*
   mv "_site"/* "/usr/share/nginx/html/"
   chcon -Rt httpd_sys_content_t "/usr/share/nginx/html/"
   sudo systemctl start nginx
@@ -88,10 +82,9 @@ build_jekyll() {
   sleep 3
   if pgrep -x "nginx"; then
     sudo pkill -9 nginx
-    echo "The nginx process has been killed."
   fi
   check_nginx
-  echo "Jekyll blog has been deployed!"
+  echo "Jekyll blog has been successfully deployed!"
 }
 
 build_jekyll
