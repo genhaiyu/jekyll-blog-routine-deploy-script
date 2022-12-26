@@ -56,12 +56,12 @@ check_rvm_env() {
     # $ rvm list known, depend on Gemfile compatibility
     echo "Start installing ruby, it will take a few minutes."
     rvm install ruby-3.0.0
+    sleep 3
   fi
   jekyll="/usr/local/rvm/gems/ruby-3.0.0/bin/jekyll"
   if ! [[ -e "${jekyll}" ]]; then
     gem install jekyll bundler
   fi
-  echo "dd"
   reload_bundle
 }
 
@@ -71,7 +71,7 @@ check_nginx() {
   else
     # Default nginx version
     sudo dnf install nginx
-    sleep 4
+    sleep 3
     sudo systemctl enable nginx
     sudo firewall-cmd --permanent --add-service=http
     sudo firewall-cmd --permanent --add-service=https
