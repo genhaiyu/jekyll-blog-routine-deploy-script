@@ -7,6 +7,29 @@ abort() {
   exit 1
 }
 
+RV="3.1.0"
+T="dnf"
+install_commands="yum"
+firewall_http="sudo firewall-cmd --permanent --add-service=http"
+firewall_https="sudo firewall-cmd --permanent --add-service=https"
+firewall_reload="sudo firewall-cmd --reload"
+
+source '/etc/os-release'
+
+check_sys() {
+  if [[ "${ID}" = "centos" && "${VERSION_ID}" == 8 ]]; then
+    V="C8"
+  elif [[ "${ID}" = "centos" && "${VERSION_ID}" == 7 ]]; then
+    GPG="gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB"
+    V="C7"
+    T="yum"
+    #    elif [[ "${ID}" = "ubuntu"  ]]; then
+
+    #  else
+    # abort "The script doesn't support the current system!"
+  fi
+}
+
 OS="$(uname)"
 if [[ "${OS}" != "Linux" ]]; then
   abort "The script only support Linux currently."
@@ -17,7 +40,10 @@ reload_source() {
 }
 
 reload_bundle() {
-  rvm use 3.0.0
+  if [[ -d "./_site" ]]; then
+    bundle clean --force
+  fi
+  rvm use 3.1.0
   bundle install
 }
 
@@ -46,19 +72,26 @@ check_repository_status() {
 }
 
 check_rvm_env() {
+  check_sys
   if ! [[ -e "/usr/local/rvm/bin/rvm" ]]; then
     # https://rvm.io/rvm/security#install-our-keys
-    gpg2 --keyserver keys.openpgp.org --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
+    if [ "$V" = "C7" ]; then
+      $GPG
+    else
+      gpg2 --keyserver keys.openpgp.org --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
+    fi
     curl -sSL https://get.rvm.io | bash -s stable
   fi
   reload_source
   if ! [[ -e "/usr/bin/ruby" ]]; then
     # $ rvm list known, depend on Gemfile compatibility
     echo "Start installing ruby, it will take a few minutes."
-    rvm install ruby-3.0.0
+    # debian 2.7.1
+    rvm install 3.1.0
     sleep 3
   fi
-  jekyll="/usr/local/rvm/gems/ruby-3.0.0/bin/jekyll"
+  jekyll="/usr/local/rvm/gems/ruby-$RV/bin/jekyll"
+  echo "$jekyll"
   if ! [[ -e "${jekyll}" ]]; then
     gem install jekyll bundler
   fi
@@ -70,7 +103,11 @@ check_nginx() {
     echo "It is detected that nginx has been installed, skip it."
   else
     # Default nginx version
-    sudo dnf install nginx
+    if [ $V = "C7" ]; then
+      sudo $T install nginx
+    else
+      sudo $T install nginx
+    fi
     sleep 3
     sudo systemctl enable nginx
     sudo firewall-cmd --permanent --add-service=http
