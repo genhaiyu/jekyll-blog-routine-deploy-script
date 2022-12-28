@@ -35,7 +35,7 @@ reload_bundle() {
   if [[ -d "./_site" ]]; then
     bundle clean --force
   fi
-  rvm $RV
+  rvm use $RV
   bundle install
 }
 
@@ -64,6 +64,7 @@ check_repository_status() {
 check_rvm_env() {
   check_sys
   check_dir
+
   if ! [[ -f "/usr/local/rvm/bin/rvm" ]]; then
     if [ "$V" = "C7" ]; then
       $GPG
@@ -73,12 +74,25 @@ check_rvm_env() {
     curl -sSL https://get.rvm.io | bash -s stable
   fi
   reload_source
+
+  #  if [[ -f "/usr/bin/ruby" ]]; then
+  #    RV="$(ruby -v)"
+  #    echo "$RV"
+  #    echo "$RV" | tr -d -c 0-9
+  #    if [[ "$RV" -le "2.7.1" ]]; then
+  #      echo "aa"
+  #      rvm install "$RV"
+  #      sleep 3
+  #    fi
+  #  fi
+
   if ! [[ -f "/usr/bin/ruby" ]]; then
     # Depends on gems or version compatibility in Gemfile
     echo "Start installing ruby, it will take a few minutes."
     rvm install $RV
     sleep 3
   fi
+
   JL="/usr/local/rvm/gems/ruby-$RV/bin/jekyll"
   if ! [[ -f "$JL" ]]; then
     gem install jekyll bundler
@@ -106,7 +120,6 @@ check_nginx() {
   if [[ "${ID}" = "centos" ]]; then
     build_posted
   fi
-
 }
 
 build_posted() {
