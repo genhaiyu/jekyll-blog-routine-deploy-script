@@ -75,17 +75,6 @@ check_rvm_env() {
   fi
   reload_source
 
-  #  if [[ -f "/usr/bin/ruby" ]]; then
-  #    RV="$(ruby -v)"
-  #    echo "$RV"
-  #    echo "$RV" | tr -d -c 0-9
-  #    if [[ "$RV" -le "2.7.1" ]]; then
-  #      echo "aa"
-  #      rvm install "$RV"
-  #      sleep 3
-  #    fi
-  #  fi
-
   if ! [[ -f "/usr/bin/ruby" ]]; then
     # Depends on gems or version compatibility in Gemfile
     echo "Start installing ruby, it will take a few minutes."
@@ -98,6 +87,15 @@ check_rvm_env() {
     gem install jekyll bundler
   fi
   reload_bundle
+}
+
+build_posted() {
+  if [[ "${ID}" = "centos" ]]; then
+    rm -rf /usr/share/nginx/html/*
+    mv "_site"/* "/usr/share/nginx/html/"
+    chcon -Rt httpd_sys_content_t "/usr/share/nginx/html/"
+    sudo systemctl start nginx
+  fi
 }
 
 check_nginx() {
@@ -116,17 +114,7 @@ check_nginx() {
     sudo firewall-cmd --reload
     sudo systemctl start nginx
   fi
-
-  if [[ "${ID}" = "centos" ]]; then
-    build_posted
-  fi
-}
-
-build_posted() {
-  rm -rf /usr/share/nginx/html/*
-  mv "_site"/* "/usr/share/nginx/html/"
-  chcon -Rt httpd_sys_content_t "/usr/share/nginx/html/"
-  sudo systemctl start nginx
+  build_posted
 }
 
 build_pre() {
