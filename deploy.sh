@@ -61,6 +61,7 @@ check_dir() {
 
 # Private repositories, username and password required
 # git clone https://github.com/genhaiyu/genhaiyu.github.io.git
+# My blog, but redirected to a new site, https://genhaiyu.github.io
 check_repository_status() {
   read -rp "Do you want to get git repository up to date (y/n)? " update
   case "$update" in
