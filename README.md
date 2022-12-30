@@ -10,7 +10,7 @@ Download the script in blog directory where deployed on Linux, make sure the dir
 wget -N --no-check-certificate -q -O deploy.sh "https://raw.githubusercontent.com/genhaiyu/jekyll-blog-routine-deploy-script/master/deploy.sh" && chmod +x deploy.sh && bash deploy.sh
 ```
 
-The script automatically installs `rvm`, `ruby`, `nginx` these dependencies on the new server, otherwise it will only be updated routinely.
+The script automatically installs `rvm`, `ruby`, `nginx` these dependencies on the new server, otherwise it will only be updated and built and deploy routinely.
 
 Currently supported Linux systems: `Ubuntu 20.04 LTS x64`, `CentOS 8 Stream x64`, `CentOS 7 x64`
 
