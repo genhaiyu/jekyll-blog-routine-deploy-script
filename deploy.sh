@@ -2,8 +2,14 @@
 
 set -e
 
+RED='\033[0;31m'
+NC='\033[0m'
+Orange='\033[0;33m'
+Blue='\033[0;34m'
+Green='\033[0;32m'
+
 abort() {
-  printf "%s\n" "$@"
+  printf "${RED}%s${NC}\n" "$@"
   exit 1
 }
 
@@ -98,6 +104,11 @@ build_posted() {
   fi
 }
 
+deploy_posted() {
+  ipv4=$(ip route get 1 | sed 's/^.*src \([^ ]*\).*$/\1/;q')
+  preview="http://"$ipv4
+}
+
 check_nginx() {
   if [[ -f "/usr/sbin/nginx" ]]; then
     echo "It is detected that nginx has been installed, skip it."
@@ -127,12 +138,14 @@ build_pre() {
 }
 
 build_jekyll() {
-  echo -e "\033[32mIt will check and install jekyll related dependencies.\033[0m"
+  echo -e "${Green}It will check and install jekyll related dependencies.${NC}"
   check_rvm_env
   check_repository_status
   build_pre
   check_nginx
-  echo -e "\033[32mJekyll blog has been successfully deployed!\033[0m"
+  deploy_posted
+  echo -e "${Green}==> Jekyll blog has been successfully deployed!${NC}"
+  echo -e "${Blue}==> Here is the preview URL: ${NC}\e[4m$preview\e[0m"
 }
 
 build_jekyll
