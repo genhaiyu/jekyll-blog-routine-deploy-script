@@ -5,12 +5,18 @@
 
 ## Documentation
 
-Download the script in blog directory where deployed on Linux, make sure the dir should have the `Gemfile`, which mean it is in the correct directory. 
+Download the script in blog directory where deployed on Linux, make sure the dir should have the `Gemfile`, which mean it is in the correct directory, see more details `Gemfile.example`
 ```markdown
 wget -N --no-check-certificate -q -O deploy.sh "https://raw.githubusercontent.com/genhaiyu/jekyll-blog-routine-deploy-script/master/deploy.sh" && chmod +x deploy.sh && bash deploy.sh
 ```
 
 The script automatically installs `rvm`, `ruby`, `nginx` these dependencies on the new server, otherwise it will only be updated routinely.
+
+Currently supported Linux systems: `Ubuntu 20.04 LTS x64`, `CentOS 8 Stream x64`, `CentOS 7 x64`
+
+## Issues
+
+This script convenient for my routine deployment of `jekyll` blog, if you have questions please let me know. 
 
 ## License
 

@@ -4,7 +4,7 @@ set -e
 
 RED='\033[0;31m'
 NC='\033[0m'
-Orange='\033[0;33m'
+# Orange='\033[0;33m'
 Blue='\033[0;34m'
 Green='\033[0;32m'
 
@@ -13,21 +13,28 @@ abort() {
   exit 1
 }
 
-RV="3.1.0"
-T="dnf"
+DEFAULT_STABLE_VERSION="3.1.0"
+INSTALL_TYPE="dnf"
+# Base/Test version
+UV="20.04"
+RVM_KEYS="--recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB"
 
 source '/etc/os-release'
 
+change_keys() {
+  GPG2="gpg2 --keyserver keys.openpgp.org $RVM_KEYS"
+}
+
 check_sys() {
   if [[ "${ID}" = "centos" && "${VERSION_ID}" == 8 ]]; then
-    V="C8"
+    change_keys
   elif [[ "${ID}" = "centos" && "${VERSION_ID}" == 7 ]]; then
     # https://rvm.io/rvm/security#install-our-keys
-    GPG="gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB"
-    V="C7"
-    T="yum"
-    #    elif [[ "${ID}" = "ubuntu"  ]]; then
-
+    GPG="gpg --keyserver hkp://keyserver.ubuntu.com:80 $RVM_KEYS"
+    INSTALL_TYPE="yum"
+  elif [[ "${ID}" = "ubuntu" ]] && [[ (($(bc <<<"${VERSION_ID} >= $UV"))) ]]; then
+    INSTALL_TYPE="apt-get"
+    change_keys
   else
     abort "The script doesn't support the current system!"
   fi
@@ -41,7 +48,7 @@ reload_bundle() {
   if [[ -d "./_site" ]]; then
     bundle clean --force
   fi
-  rvm use $RV
+  rvm use $DEFAULT_STABLE_VERSION
   bundle install
 }
 
@@ -72,36 +79,43 @@ check_rvm_env() {
   check_dir
 
   if ! [[ -f "/usr/local/rvm/bin/rvm" ]]; then
-    if [ "$V" = "C7" ]; then
-      $GPG
+    if [[ "$INSTALL_TYPE" = "dnf" || "$INSTALL_TYPE" = "apt-get" ]]; then
+      $GPG2
     else
-      gpg2 --keyserver keys.openpgp.org --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
+      $GPG
     fi
     curl -sSL https://get.rvm.io | bash -s stable
   fi
   reload_source
-
-  if ! [[ -f "/usr/bin/ruby" ]]; then
+  # Default in /usr/bin/ruby
+  if ! [[ -f "/usr/local/rvm/rubies/ruby-$DEFAULT_STABLE_VERSION/bin/ruby" ]]; then
     # Depends on gems or version compatibility in Gemfile
     echo "Start installing ruby, it will take a few minutes."
-    rvm install $RV
+    rvm install $DEFAULT_STABLE_VERSION
     sleep 3
   fi
 
-  JL="/usr/local/rvm/gems/ruby-$RV/bin/jekyll"
-  if ! [[ -f "$JL" ]]; then
+  jekyll_location="/usr/local/rvm/gems/ruby-$DEFAULT_STABLE_VERSION/bin/jekyll"
+  if ! [[ -f "$jekyll_location" ]]; then
     gem install jekyll bundler
   fi
   reload_bundle
 }
 
 build_posted() {
-  if [[ "${ID}" = "centos" ]]; then
+  if [[ $INSTALL_TYPE = "yum" ]] || [[ $INSTALL_TYPE = "dnf" ]]; then
     rm -rf /usr/share/nginx/html/*
     mv "_site"/* "/usr/share/nginx/html/"
-    chcon -Rt httpd_sys_content_t "/usr/share/nginx/html/"
-    sudo systemctl start nginx
+    if [[ $INSTALL_TYPE = 'dnf' ]]; then
+        chcon -Rt httpd_sys_content_t "/usr/share/nginx/html/"
+    fi
+  elif [[ $INSTALL_TYPE = "apt-get" ]]; then
+    rm -rf /var/www/html/*
+    mv "_site"/* "/var/www/html/"
+  else
+    abort "The script doesn't support the current system!"
   fi
+  sudo systemctl start nginx
 }
 
 deploy_posted() {
@@ -113,10 +127,14 @@ check_nginx() {
   if [[ -f "/usr/sbin/nginx" ]]; then
     echo "It is detected that nginx has been installed, skip it."
   else
-    if [ $V = "C7" ]; then
-      sudo $T install nginx
+    if [ $INSTALL_TYPE = "yum" ]; then
+      sudo $INSTALL_TYPE install nginx
+    elif [ $INSTALL_TYPE = "apt-get" ]; then
+      sudo $INSTALL_TYPE install nginx
+      sudo $INSTALL_TYPE install firewalld
     else
-      sudo $T install nginx
+      # dnf
+      sudo $INSTALL_TYPE install nginx
     fi
     sleep 3
     sudo systemctl enable nginx
