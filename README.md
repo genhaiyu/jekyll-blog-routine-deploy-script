@@ -1,4 +1,4 @@
-# jekyll-blog-routine-deploy-script
+# Automatically deploy and release a jekyll blog
 
 > Streamlining the steps of deploy a jekyll blog requires manual input of many commands after cutting off nginx traffic and processes.
 
