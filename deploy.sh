@@ -25,6 +25,10 @@ change_keys() {
   GPG2="gpg2 --keyserver keys.openpgp.org $RVM_KEYS"
 }
 
+compare_version() {
+  perl -e "{if($1>=$2){print 1} else {print 0}}"
+}
+
 check_sys() {
   if [[ "${ID}" = "centos" && "${VERSION_ID}" == 8 ]]; then
     change_keys
@@ -32,7 +36,7 @@ check_sys() {
     # https://rvm.io/rvm/security#install-our-keys
     GPG="gpg --keyserver hkp://keyserver.ubuntu.com:80 $RVM_KEYS"
     INSTALL_TYPE="yum"
-  elif [[ "${ID}" = "ubuntu" ]] && [[ (($(bc <<<"${VERSION_ID} >= $UV"))) ]]; then
+  elif [[ "${ID}" = "ubuntu" ]] && [[ "$(compare_version "${VERSION_ID}" $UV)" == 1 ]]; then
     INSTALL_TYPE="apt-get"
     change_keys
   else
