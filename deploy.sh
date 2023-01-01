@@ -17,6 +17,7 @@ DEFAULT_STABLE_VERSION="3.1.0"
 INSTALL_TYPE="dnf"
 # Base/Test version
 UV="20.04"
+# https://rvm.io/rvm/security#install-our-keys
 RVM_KEYS="--recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB"
 
 source '/etc/os-release'
@@ -33,7 +34,6 @@ check_sys() {
   if [[ "${ID}" = "centos" && "${VERSION_ID}" == 8 ]]; then
     change_keys
   elif [[ "${ID}" = "centos" && "${VERSION_ID}" == 7 ]]; then
-    # https://rvm.io/rvm/security#install-our-keys
     GPG="gpg --keyserver hkp://keyserver.ubuntu.com:80 $RVM_KEYS"
     INSTALL_TYPE="yum"
   elif [[ "${ID}" = "ubuntu" ]] && [[ "$(compare_version "${VERSION_ID}" $UV)" == 1 ]]; then
@@ -95,7 +95,7 @@ check_rvm_env() {
   # Default in /usr/bin/ruby
   if ! [[ -f "/usr/local/rvm/rubies/ruby-$DEFAULT_STABLE_VERSION/bin/ruby" ]]; then
     # Depends on gems or version compatibility in Gemfile
-    echo "Start installing ruby, it will take a few minutes."
+    echo "Start installing ruby, it may take a few minutes."
     rvm install $DEFAULT_STABLE_VERSION
     sleep 3
   fi
