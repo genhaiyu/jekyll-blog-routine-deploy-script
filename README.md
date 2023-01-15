@@ -17,7 +17,7 @@ Currently supported Linux systems: `Ubuntu 20.04 LTS x64`, `CentOS 8 Stream x64`
 
 ## Issues
 
-This script convenient for my routine deployment of `jekyll` blog, if you have questions please let me know. 
+This script convenient for my routine deployment of `jekyll` blog, if you have questions or want to give ideas, IS or PR are welcome. 
 
 ## License
 
