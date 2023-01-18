@@ -6,7 +6,7 @@
 
 ## Documentation
 
-Download the script in blog directory where deployed on Linux, make sure the dir should have the `Gemfile`, which mean it is in the correct directory, see more details `Gemfile.example`
+Download the script in blog directory where deployed on Linux, make sure the directory should have the `Gemfile`, which mean it is in the correct directory, [a sample of Jekyll blog](https://github.com/genhaiyu/jekyll-example)
 ```markdown
 wget -N --no-check-certificate -q -O deploy.sh "https://raw.githubusercontent.com/genhaiyu/jekyll-blog-routine-deploy-script/master/deploy.sh" && chmod +x deploy.sh && bash deploy.sh
 ```
