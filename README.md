@@ -1,6 +1,7 @@
 # Automatically deploy and release a jekyll blog
 
 [![GNU General Public License v3.0](https://img.shields.io/github/license/genhaiyu/jekyll-blog-routine-deploy-script)](https://github.com/genhaiyu/jekyll-blog-routine-deploy-script/blob/master/LICENSE)
+[![](https://img.shields.io/github/actions/workflow/status/genhaiyu/jekyll-blog-routine-deploy-script/check-build.yml)](https://github.com/genhaiyu/jekyll-blog-routine-deploy-script/blob/master/.github/workflows/check-build.yml)
 
 > Streamlining the steps of deploy a jekyll blog requires manual input of many commands after cutting off nginx traffic and processes.
 
