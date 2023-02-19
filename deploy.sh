@@ -80,8 +80,8 @@ check_repository_status() {
 }
 
 check_rvm_env() {
-  check_sys
   check_dir
+  check_sys
 
   if ! [[ -f "/usr/local/rvm/bin/rvm" ]]; then
     if [[ "$INSTALL_TYPE" = "dnf" || "$INSTALL_TYPE" = "apt-get" ]]; then
@@ -112,7 +112,7 @@ build_posted() {
     rm -rf /usr/share/nginx/html/*
     mv "_site"/* "/usr/share/nginx/html/"
     if [[ $INSTALL_TYPE = 'dnf' ]]; then
-        chcon -Rt httpd_sys_content_t "/usr/share/nginx/html/"
+      chcon -Rt httpd_sys_content_t "/usr/share/nginx/html/"
     fi
   elif [[ $INSTALL_TYPE = "apt-get" ]]; then
     rm -rf /var/www/html/*
