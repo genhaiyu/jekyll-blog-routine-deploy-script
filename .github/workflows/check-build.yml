@@ -20,10 +20,10 @@ jobs:
 
       - name: Check project
         run: |
+          mv -f jekyll-example/* /home/runner/work/jekyll-blog-routine-deploy-script/jekyll-blog-routine-deploy-script
           if ! [[ -f "Gemfile.lock" ]]; then
             rm -rf Gemfile.lock
           fi
-          mv -f jekyll-example/* /home/runner/work/jekyll-blog-routine-deploy-script/jekyll-blog-routine-deploy-script
           rm -rf jekyll-example/
       - name: Run script
         run: chmod +x ./deploy.sh
