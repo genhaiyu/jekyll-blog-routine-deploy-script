@@ -25,5 +25,6 @@ jobs:
             rm -rf Gemfile.lock
           fi
           rm -rf jekyll-example/
+          ls -la
       - name: Run script
         run: chmod +x ./deploy.sh
