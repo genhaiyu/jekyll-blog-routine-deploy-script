@@ -5,7 +5,7 @@
 
 > Streamlining the steps of deploy a jekyll blog requires manual input of many commands after cutting off nginx traffic and processes.
 
-<img src="https://user-images.githubusercontent.com/17850202/211508886-3816436f-a29e-4a6b-952b-33f05f5becec.gif" width="500" height="650" alt="example"/>
+<img src="https://user-images.githubusercontent.com/17850202/222082624-4703c0bb-4812-4954-becf-90b67453e6d6.gif" width="700" alt="example"/>
 
 ## Documentation
 
