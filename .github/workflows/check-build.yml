@@ -22,6 +22,5 @@ jobs:
         run: |
           mv -f jekyll-example/* /home/runner/work/jekyll-blog-routine-deploy-script/jekyll-blog-routine-deploy-script
           rm -rf jekyll-example/
-          ls -la
       - name: Run script
         run: chmod +x ./deploy.sh
