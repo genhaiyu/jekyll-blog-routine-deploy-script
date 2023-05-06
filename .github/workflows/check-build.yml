@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Check out the example project
+        run: git clone https://github.com/genhaiyu/jekyll-example.git && chmod +x jekyll-example/
+
+      - name: Check project
+        run: |
+          mv -f jekyll-example/* /home/runner/work/jekyll-blog-routine-deploy-script/jekyll-blog-routine-deploy-script
+          rm -rf jekyll-example/
+      - name: Run script
+        run: chmod +x ./deploy.sh
