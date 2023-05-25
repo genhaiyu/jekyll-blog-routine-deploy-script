@@ -49,10 +49,6 @@ check_sys() {
   fi
 }
 
-reload_source() {
-  source '/etc/profile.d/rvm.sh'
-}
-
 reload_bundle() {
   if [[ -d "./_site" ]]; then
     bundle clean --force
@@ -97,7 +93,7 @@ check_rvm_env() {
     fi
     curl -sSL https://get.rvm.io | bash -s stable
   fi
-  reload_source
+  source '/etc/profile.d/rvm.sh'
   # Default in /usr/bin/ruby
   if ! [[ -f "/usr/local/rvm/rubies/ruby-$DEFAULT_STABLE_VERSION/bin/ruby" ]]; then
     # Depends on gems or version compatibility in Gemfile
