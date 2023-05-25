@@ -7,6 +7,7 @@ NC='\033[0m'
 # Orange='\033[0;33m'
 Blue='\033[0;34m'
 Green='\033[0;32m'
+COMMON_ERROR="The script doesn't support the current system!"
 
 abort() {
   printf "${RED}%s${NC}\n" "$@"
@@ -20,8 +21,6 @@ UV="20.04"
 # https://rvm.io/rvm/security#install-our-keys
 RVM_KEYS="--recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB"
 
-source '/etc/os-release'
-
 change_keys() {
   GPG2="gpg2 --keyserver keys.openpgp.org $RVM_KEYS"
 }
@@ -31,6 +30,12 @@ compare_version() {
 }
 
 check_sys() {
+  OS="$(uname)"
+  if [[ "${OS}" != "Linux" ]]
+  then
+    abort "$COMMON_ERROR"
+  fi
+  source '/etc/os-release'
   if [[ "${ID}" = "centos" && "${VERSION_ID}" == 8 ]]; then
     change_keys
   elif [[ "${ID}" = "centos" && "${VERSION_ID}" == 7 ]]; then
@@ -40,7 +45,7 @@ check_sys() {
     INSTALL_TYPE="apt-get"
     change_keys
   else
-    abort "The script doesn't support the current system!"
+    abort "$COMMON_ERROR"
   fi
 }
 
@@ -60,6 +65,7 @@ check_dir() {
   if ! [[ -e "Gemfile" ]]; then
     abort "Please build this script in jekyll blog directory!"
   fi
+  # If upgraded the new version of the Ruby on current machine, this action have to process every time.
   rm -rf 'Gemfile.lock'
 }
 
@@ -118,7 +124,7 @@ build_posted() {
     rm -rf /var/www/html/*
     mv "_site"/* "/var/www/html/"
   else
-    abort "The script doesn't support the current system!"
+    abort "$COMMON_ERROR"
   fi
   sudo systemctl start nginx
 }
