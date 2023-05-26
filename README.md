@@ -8,7 +8,11 @@
 
 ## Documentation
 
-Download the script in blog directory where deployed on Linux, make sure the directory should have the `Gemfile`, which mean it is in the correct directory. This [A sample of Jekyll blog](https://github.com/genhaiyu/jekyll-example) passed built test, can be release a blog quickly.
+Download the script in the blog directory which is deployed on Linux server,
+make sure in the directory should have the `Gemfile` file.
+
+This [A sample of Jekyll blog](https://github.com/genhaiyu/jekyll-example) passed built test,
+can be release a blog quickly.
 ```markdown
 curl -sSLO https://raw.githubusercontent.com/genhaiyu/jekyll-blog-routine-deploy-script/master/deploy.sh && chmod a+x deploy.sh && bash deploy.sh
 ```

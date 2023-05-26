@@ -61,13 +61,11 @@ check_dir() {
   if ! [[ -e "Gemfile" ]]; then
     abort "Please build this script in jekyll blog directory!"
   fi
-  # If upgraded the new version of the Ruby on current machine, this action have to process every time.
+  # Just in case building in this version that has been upgraded on the old version.
   rm -rf 'Gemfile.lock'
 }
 
-# Private repositories, username and password required
-# git clone https://github.com/genhaiyu/genhaiyu.github.io.git
-# My blog, but redirected to a new site, https://genhaiyu.github.io
+# Private repository, username and password required
 check_repository_status() {
   read -rp "Do you want to get git repository up to date (y/n)? " update
   case "$update" in
@@ -76,7 +74,7 @@ check_repository_status() {
     sleep 2
     ;;
   *)
-    echo "User canceled git update, skipping."
+    echo "User canceled git update, continuing."
     ;;
   esac
 }
