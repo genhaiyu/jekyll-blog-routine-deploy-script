@@ -1,25 +1,28 @@
-# Automatically deploy and release a jekyll blog
+# A script to automatically deploy the Jekyll blog on Linux
+
+<img src="https://user-images.githubusercontent.com/17850202/264347872-8fd87cae-80dd-4721-b60a-dbc4578eadfc.png" width="260" alt="octojekyll">
 
 [![](https://img.shields.io/github/actions/workflow/status/genhaiyu/jekyll-blog-routine-deploy-script/check-build.yml)](https://github.com/genhaiyu/jekyll-blog-routine-deploy-script/blob/master/.github/workflows/check-build.yml)
+> After each commit to repository (including private GitHub Pages repository), go to the server to execute this script, which can automatically deploy and release a Jekyll blog.
 
-> Streamlining the steps of deploy a jekyll blog requires manual input of many commands after cutting off nginx traffic and processes.
-
-<img src="https://user-images.githubusercontent.com/17850202/222082624-4703c0bb-4812-4954-becf-90b67453e6d6.gif" width="500" alt="example"/>
+<img src="https://user-images.githubusercontent.com/17850202/265168014-41ed930f-dd74-4783-8104-c55f638b8338.gif" width="560" alt="deploying"/>
 
 ## Documentation
 
-Download the script in the blog directory which is deployed on Linux server,
-make sure in the directory should have the `Gemfile` file.
+The script automatically checks and installs the dependencies of the Jekyll prerequisite environment on the new server,
+such as `RVM`, `Ruby`, `Nginx`.
+Otherwise, it only updates, builds, deploys, releases after each commit to GitHub.
 
-This [A sample of Jekyll blog](https://github.com/genhaiyu/jekyll-example) passed built test,
-can be release a blog quickly.
+- Quick steps:
+  * Copy the `A sample of Jekyll blog` repository below to a Linux server.
+    * This [A sample of Jekyll blog](https://github.com/genhaiyu/jekyll-example) is a basic Jekyll skeleton, can be released an example quickly.
+  * Go to the repository directory on the server, execute the command of below.
+
 ```markdown
 curl -sSLO https://raw.githubusercontent.com/genhaiyu/jekyll-blog-routine-deploy-script/master/deploy.sh && chmod a+x deploy.sh && bash deploy.sh
 ```
 
-The script automatically installs `rvm`, `ruby`, `nginx` these dependencies on the new server, otherwise it will only be updated, built, deploy, released routinely.
-
-Currently supported Linux systems: `Ubuntu 20.04 LTS x64`, `CentOS 8 Stream x64`, `CentOS 7 x64`
+Currently supported Linux systems: `CentOS 7 x86/64`(recommend), `Ubuntu 20.04 LTS x86/64`, `CentOS 8 Stream x86/64`.
 
 ## License
 

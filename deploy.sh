@@ -4,10 +4,9 @@ set -e
 
 RED='\033[0;31m'
 NC='\033[0m'
-# Orange='\033[0;33m'
 Blue='\033[0;34m'
 Green='\033[0;32m'
-COMMON_ERROR="The script doesn't support the current system!"
+ERROR="The script doesn't support the current system!"
 
 abort() {
   printf "${RED}%s${NC}\n" "$@"
@@ -22,7 +21,7 @@ UV="20.04"
 RVM_KEYS="--recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB"
 
 change_keys() {
-  GPG2="gpg2 --keyserver keys.openpgp.org $RVM_KEYS"
+  GPG="gpg --keyserver hkp://keyserver.ubuntu.com:80 $RVM_KEYS"
 }
 
 compare_version() {
@@ -33,19 +32,23 @@ check_sys() {
   OS="$(uname)"
   if [[ "${OS}" != "Linux" ]]
   then
-    abort "$COMMON_ERROR"
+    abort "$ERROR"
+  fi
+  if ! [ $UID = 0 ]; then
+      abort "Try to use root to do the following actions."
   fi
   source '/etc/os-release'
   if [[ "${ID}" = "centos" && "${VERSION_ID}" == 8 ]]; then
-    change_keys
+    GPG2="gpg2 --keyserver keys.openpgp.org $RVM_KEYS"
   elif [[ "${ID}" = "centos" && "${VERSION_ID}" == 7 ]]; then
-    GPG="gpg --keyserver hkp://keyserver.ubuntu.com:80 $RVM_KEYS"
+    change_keys
     INSTALL_TYPE="yum"
+    # Tested on Ubuntu 20.04 only
   elif [[ "${ID}" = "ubuntu" ]] && [[ "$(compare_version "${VERSION_ID}" $UV)" == 1 ]]; then
     INSTALL_TYPE="apt-get"
     change_keys
   else
-    abort "$COMMON_ERROR"
+    abort "$ERROR"
   fi
 }
 
@@ -59,22 +62,22 @@ reload_bundle() {
 
 check_dir() {
   if ! [[ -e "Gemfile" ]]; then
-    abort "Please build this script in jekyll blog directory!"
+    abort "Please build this script in Jekyll blog directory!"
   fi
-  # Just in case building in this version that has been upgraded on the old version.
+  # Refresh the version that has been incremented
   rm -rf 'Gemfile.lock'
 }
 
 # Private repository, username and password required
 check_repository_status() {
-  read -rp "Do you want to get git repository up to date (y/n)? " update
+  read -rp "Do you want to keep the Git repository up to date (y/n)? " update
   case "$update" in
   y | Y)
     git pull
     sleep 2
     ;;
   *)
-    echo "User canceled git update, continuing."
+    echo "User canceled Git update, continuing."
     ;;
   esac
 }
@@ -92,12 +95,10 @@ check_rvm_env() {
     curl -sSL https://get.rvm.io | bash -s stable
   fi
   source '/etc/profile.d/rvm.sh'
-  # Default in /usr/bin/ruby
   if ! [[ -f "/usr/local/rvm/rubies/ruby-$DEFAULT_STABLE_VERSION/bin/ruby" ]]; then
-    # Depends on gems or version compatibility in Gemfile
-    echo "Start installing ruby, it may take a few minutes."
+    echo "Start installing Ruby, it may take a few minutes."
     rvm install $DEFAULT_STABLE_VERSION
-    sleep 3
+    sleep 2
   fi
 
   jekyll_location="/usr/local/rvm/gems/ruby-$DEFAULT_STABLE_VERSION/bin/jekyll"
@@ -118,19 +119,20 @@ build_posted() {
     rm -rf /var/www/html/*
     mv "_site"/* "/var/www/html/"
   else
-    abort "$COMMON_ERROR"
+    abort "$ERROR"
   fi
   sudo systemctl start nginx
 }
 
 deploy_posted() {
-  ipv4=$(ip route get 1 | sed 's/^.*src \([^ ]*\).*$/\1/;q')
-  preview="http://"$ipv4
+  # ipv4=$(ip route get 1 | sed 's/^.*src \([^ ]*\).*$/\1/;q')
+  external_ipv4=$(curl icanhazip.com)
+  preview="http://"$external_ipv4
 }
 
 check_nginx() {
   if [[ -f "/usr/sbin/nginx" ]]; then
-    echo "It is detected that nginx has been installed, skip it."
+    echo "Nginx is detected as installed, skip it."
   else
     if [ $INSTALL_TYPE = "yum" ]; then
       sudo $INSTALL_TYPE install nginx
@@ -141,7 +143,7 @@ check_nginx() {
       # dnf
       sudo $INSTALL_TYPE install nginx
     fi
-    sleep 3
+    sleep 2
     sudo systemctl enable nginx
     sudo firewall-cmd --permanent --add-service=http
     sudo firewall-cmd --permanent --add-service=https
@@ -161,14 +163,14 @@ build_pre() {
 }
 
 build_jekyll() {
-  echo -e "${Green}It will check and install jekyll related dependencies.${NC}"
+  echo -e "${Green}Checking for Jekyll related dependencies.${NC}"
   check_rvm_env
   check_repository_status
   build_pre
   check_nginx
   deploy_posted
   echo -e "${Green}==> Jekyll blog has been successfully deployed!${NC}"
-  echo -e "${Blue}==> Here is the preview URL: ${NC}\e[4m$preview\e[0m"
+  echo -e "${Blue}==> Here is the preview URL (ipv4): ${NC}\e[4m$preview\e[0m"
 }
 
 build_jekyll
