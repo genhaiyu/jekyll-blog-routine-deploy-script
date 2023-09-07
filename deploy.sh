@@ -15,7 +15,7 @@ abort() {
 
 DEFAULT_STABLE_VERSION="3.1.0"
 INSTALL_TYPE="dnf"
-# Base/Test version
+# Tested on Ubuntu 20.04 only
 UV="20.04"
 # https://rvm.io/rvm/security#install-our-keys
 RVM_KEYS="--recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB"
@@ -43,7 +43,6 @@ check_sys() {
   elif [[ "${ID}" = "centos" && "${VERSION_ID}" == 7 ]]; then
     change_keys
     INSTALL_TYPE="yum"
-    # Tested on Ubuntu 20.04 only
   elif [[ "${ID}" = "ubuntu" ]] && [[ "$(compare_version "${VERSION_ID}" $UV)" == 1 ]]; then
     INSTALL_TYPE="apt-get"
     change_keys
