@@ -122,9 +122,10 @@ build_posted() {
   sudo systemctl start nginx
 }
 
-deploy_posted() {
+# curl -4/-6
+preview_url() {
   # ipv4=$(ip route get 1 | sed 's/^.*src \([^ ]*\).*$/\1/;q')
-  external_ipv4=$(curl icanhazip.com)
+  external_ipv4=$(curl -4 icanhazip.com)
   preview="http://"$external_ipv4
 }
 
@@ -166,7 +167,7 @@ build_jekyll() {
   check_repository_status
   build_pre
   check_nginx
-  deploy_posted
+  preview_url
   echo -e "${Green}==> Jekyll blog has been successfully deployed!${NC}"
   echo -e "${Blue}==> Here is the preview URL (ipv4): ${NC}\e[4m$preview\e[0m"
 }
