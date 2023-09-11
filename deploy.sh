@@ -30,11 +30,10 @@ compare_version() {
 
 check_sys() {
   OS="$(uname)"
-  if [[ "${OS}" != "Linux" ]]
-  then
+  if ! [[ "${OS}" = "Linux" ]]; then
     abort "$ERROR"
   fi
-  if ! [ $UID = 0 ]; then
+  if ! [[ $UID == 0 ]]; then
       abort "Try to use root to do the following actions."
   fi
   source '/etc/os-release'
