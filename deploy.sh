@@ -67,7 +67,7 @@ check_dir() {
 }
 
 # Private repository, username and password required
-check_repository_status() {
+pull_repository_data() {
   read -rp "Do you want to keep the Git repository up to date (y/n)? " update
   case "$update" in
   y | Y)
@@ -164,7 +164,7 @@ build_pre() {
 build_jekyll() {
   echo -e "${Green}Checking for Jekyll related dependencies.${NC}"
   check_rvm_env
-  check_repository_status
+  pull_repository_data
   build_pre
   check_nginx
   preview_url
