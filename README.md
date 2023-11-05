@@ -17,6 +17,7 @@ Otherwise, it only updates, builds, deploys, releases after each commit to GitHu
   * Copy the `A sample of Jekyll blog` repository below to a Linux server.
     * This [A sample of Jekyll blog](https://github.com/genhaiyu/jekyll-example) is a basic Jekyll skeleton, can be released an example quickly.
   * Go to the repository directory on the server, execute the command of below after changing the current user is root.
+  * [Full documentation](https://genhai.dev/customize-a-jekyll-blog-to-automatically-deploy-and-release-on-linux.html) for this script.
 
 ```markdown
 curl -sSLO https://raw.githubusercontent.com/genhaiyu/jekyll-blog-routine-deploy-script/master/deploy.sh && chmod a+x deploy.sh && bash deploy.sh

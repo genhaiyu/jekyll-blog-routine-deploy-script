@@ -17,7 +17,7 @@ DEFAULT_STABLE_VERSION="3.1.0"
 INSTALL_TYPE="dnf"
 # Tested on Ubuntu 20.04 only
 UV="20.04"
-# https://rvm.io/rvm/security#install-our-keys
+# Keys reference to https://rvm.io/rvm/security#install-our-keys
 RVM_KEYS="--recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB"
 
 change_keys() {
@@ -62,7 +62,7 @@ check_dir() {
   if ! [[ -e "Gemfile" ]]; then
     abort "Please build this script in Jekyll blog directory!"
   fi
-  # Refresh the version that has been incremented
+  # Always refresh the gem
   rm -rf 'Gemfile.lock'
 }
 
@@ -124,6 +124,7 @@ build_posted() {
 
 # curl -4/-6
 preview_url() {
+  # Internal IP
   # ipv4=$(ip route get 1 | sed 's/^.*src \([^ ]*\).*$/\1/;q')
   external_ipv4=$(curl -4 icanhazip.com)
   preview="http://"$external_ipv4
