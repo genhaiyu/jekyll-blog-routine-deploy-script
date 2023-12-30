@@ -21,7 +21,7 @@ UV="20.04"
 RVM_KEYS="--recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB"
 
 change_keys() {
-  GPG="gpg --keyserver hkp://keyserver.ubuntu.com:80 $RVM_KEYS"
+  GPG="gpg --keyserver hkp://keyserver.ubuntu.com $RVM_KEYS"
 }
 
 compare_version() {
@@ -85,10 +85,10 @@ check_rvm_env() {
   check_sys
 
   if ! [[ -f "/usr/local/rvm/bin/rvm" ]]; then
-    if [[ "$INSTALL_TYPE" = "dnf" || "$INSTALL_TYPE" = "apt-get" ]]; then
-      $GPG2
-    else
+    if [[ "$INSTALL_TYPE" = "yum" || "$INSTALL_TYPE" = "apt-get" ]]; then
       $GPG
+    else
+      $GPG2
     fi
     curl -sSL https://get.rvm.io | bash -s stable
   fi
@@ -156,7 +156,7 @@ check_nginx() {
 build_pre() {
   rm -rf _site/
   jekyll build --source "$HOME"/"${PWD##*/}"
-  sleep 3
+  sleep 2
   if pgrep -x "nginx" >/dev/null; then
     sudo pkill -9 nginx
   fi
