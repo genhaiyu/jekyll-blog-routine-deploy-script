@@ -21,7 +21,7 @@ UV="20.04"
 RVM_KEYS="--recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB"
 
 change_keys() {
-  GPG="gpg --keyserver hkp://keyserver.ubuntu.com:80 $RVM_KEYS"
+  GPG="gpg --keyserver hkp://keyserver.ubuntu.com $RVM_KEYS"
 }
 
 compare_version() {
@@ -60,7 +60,7 @@ reload_bundle() {
 
 check_dir() {
   if ! [[ -e "Gemfile" ]]; then
-    abort "Please build this script in Jekyll blog directory!"
+    abort "Please build this script in Jekyll directory!"
   fi
   # Always refresh the gem
   rm -rf 'Gemfile.lock'
@@ -85,10 +85,10 @@ check_rvm_env() {
   check_sys
 
   if ! [[ -f "/usr/local/rvm/bin/rvm" ]]; then
-    if [[ "$INSTALL_TYPE" = "dnf" || "$INSTALL_TYPE" = "apt-get" ]]; then
-      $GPG2
-    else
+    if [[ "$INSTALL_TYPE" = "yum" || "$INSTALL_TYPE" = "apt-get" ]]; then
       $GPG
+    else
+      $GPG2
     fi
     curl -sSL https://get.rvm.io | bash -s stable
   fi
@@ -107,15 +107,15 @@ check_rvm_env() {
 }
 
 build_posted() {
-  if [[ $INSTALL_TYPE = "yum" ]] || [[ $INSTALL_TYPE = "dnf" ]]; then
-    rm -rf /usr/share/nginx/html/*
-    mv "_site"/* "/usr/share/nginx/html/"
-    if [[ $INSTALL_TYPE = 'dnf' ]]; then
-      chcon -Rt httpd_sys_content_t "/usr/share/nginx/html/"
-    fi
-  elif [[ $INSTALL_TYPE = "apt-get" ]]; then
+
+  if [[ $INSTALL_TYPE = "apt-get" ]]; then
     rm -rf /var/www/html/*
     mv "_site"/* "/var/www/html/"
+
+    elif [[ $INSTALL_TYPE = "yum" ]]; then
+      rm -rf /usr/share/nginx/html/*
+      mv "_site"/* "/usr/share/nginx/html/"
+      chcon -Rt httpd_sys_content_t "/usr/share/nginx/html/"
   else
     abort "$ERROR"
   fi
@@ -134,14 +134,11 @@ check_nginx() {
   if [[ -f "/usr/sbin/nginx" ]]; then
     echo "Nginx is detected as installed, skip it."
   else
-    if [ $INSTALL_TYPE = "yum" ]; then
-      sudo $INSTALL_TYPE install nginx
-    elif [ $INSTALL_TYPE = "apt-get" ]; then
-      sudo $INSTALL_TYPE install nginx
-      sudo $INSTALL_TYPE install firewalld
+    if [[ $INSTALL_TYPE = "apt-get" ]]; then
+        sudo $INSTALL_TYPE install nginx
+        sudo $INSTALL_TYPE install firewalld
     else
-      # dnf
-      sudo $INSTALL_TYPE install nginx
+        sudo $INSTALL_TYPE install nginx
     fi
     sleep 2
     sudo systemctl enable nginx
@@ -156,7 +153,7 @@ check_nginx() {
 build_pre() {
   rm -rf _site/
   jekyll build --source "$HOME"/"${PWD##*/}"
-  sleep 3
+  sleep 2
   if pgrep -x "nginx" >/dev/null; then
     sudo pkill -9 nginx
   fi
