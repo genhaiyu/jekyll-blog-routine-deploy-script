@@ -14,16 +14,17 @@ such as `RVM`, `Ruby`, `Nginx`.
 Otherwise, it only updates, builds, deploys, releases after each commit to GitHub.
 
 - Quick steps:
-  * Copy the `A sample of Jekyll blog` repository below to a Linux server.
+  * Copy the `A sample of Jekyll blog` repository to a server.
     * This [A sample of Jekyll blog](https://github.com/genhaiyu/jekyll-example) is a basic Jekyll skeleton, can be released an example quickly.
-  * Go to the repository directory on the server, execute the command of below after changing the current user is root.
-  * [Full documentation](https://genhai.dev/customize-a-jekyll-blog-to-automatically-deploy-and-release-on-linux.html) for this script.
+  * Go to the repository directory on the server, build this script to automatically initial or routine update.
 
 ```markdown
 curl -sSLO https://raw.githubusercontent.com/genhaiyu/jekyll-blog-routine-deploy-script/master/deploy.sh && chmod a+x deploy.sh && bash deploy.sh
 ```
 
-Currently supported Linux systems: `CentOS 7 x86/64`(recommend), `Ubuntu 20.04 LTS x86/64`, `CentOS 8 Stream x86/64`.
+Currently supported Linux systems: `Ubuntu 20.04 LTS x86/64`, `CentOS 7 x86/64`.
+
+[Full documentation](https://genhai.dev/customize-a-jekyll-blog-to-automatically-deploy-and-release-on-linux.html) for this script.
 
 ## License
 
