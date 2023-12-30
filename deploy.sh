@@ -141,11 +141,10 @@ check_nginx() {
         sudo $INSTALL_TYPE install nginx
     fi
     sleep 2
-    sudo systemctl enable nginx
     sudo firewall-cmd --permanent --add-service=http
     sudo firewall-cmd --permanent --add-service=https
     sudo firewall-cmd --reload
-    sudo systemctl start nginx
+    sudo systemctl enable nginx
   fi
   build_posted
 }
