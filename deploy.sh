@@ -94,7 +94,7 @@ check_rvm_env() {
   fi
   source '/etc/profile.d/rvm.sh'
   if ! [[ -f "/usr/local/rvm/rubies/ruby-$DEFAULT_STABLE_VERSION/bin/ruby" ]]; then
-    echo "Start installing Ruby, it may take a few minutes."
+    echo "Start installing Ruby, it might takes a few minutes."
     rvm install $DEFAULT_STABLE_VERSION
     sleep 2
   fi
