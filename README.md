@@ -22,7 +22,7 @@ Otherwise, it only updates, builds, deploys, releases after each commit to GitHu
 curl -sSLO https://raw.githubusercontent.com/genhaiyu/jekyll-blog-routine-deploy-script/master/deploy.sh && chmod a+x deploy.sh && bash deploy.sh
 ```
 
-Currently supported Linux systems: `Ubuntu 20.04 LTS x86/64`, `CentOS 7 x86/64`, `CentOS 8 Stream x86/64`.
+Currently supported Linux systems: `Ubuntu 20.04 LTS x86/64`, `CentOS 7 x86/64`.
 
 [Full documentation](https://genhai.dev/customize-a-jekyll-blog-to-automatically-deploy-and-release-on-linux.html) for this script.
 
