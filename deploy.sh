@@ -134,14 +134,11 @@ check_nginx() {
   if [[ -f "/usr/sbin/nginx" ]]; then
     echo "Nginx is detected as installed, skip it."
   else
-    if [ $INSTALL_TYPE = "yum" ]; then
-      sudo $INSTALL_TYPE install nginx
-    elif [ $INSTALL_TYPE = "apt-get" ]; then
-      sudo $INSTALL_TYPE install nginx
-      sudo $INSTALL_TYPE install firewalld
+    if [[ $INSTALL_TYPE = "apt-get" ]]; then
+        sudo $INSTALL_TYPE install nginx
+        sudo $INSTALL_TYPE install firewalld
     else
-      # dnf
-      sudo $INSTALL_TYPE install nginx
+        sudo $INSTALL_TYPE install nginx
     fi
     sleep 2
     sudo systemctl enable nginx
