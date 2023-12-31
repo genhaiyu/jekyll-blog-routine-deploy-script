@@ -43,7 +43,7 @@ check_sys() {
     change_keys
     INSTALL_TYPE="yum"
   elif [[ "${ID}" = "ubuntu" ]] && [[ "$(compare_version "${VERSION_ID}" $UV)" == 1 ]]; then
-    INSTALL_TYPE="apt-get"
+    INSTALL_TYPE="apt"
     change_keys
   else
     abort "$ERROR"
@@ -60,7 +60,7 @@ reload_bundle() {
 
 check_dir() {
   if ! [[ -e "Gemfile" ]]; then
-    abort "Please build this script in Jekyll directory!"
+    abort "Please running in Jekyll directory!"
   fi
   # Always refresh the gem
   rm -rf 'Gemfile.lock'
@@ -85,7 +85,7 @@ check_rvm_env() {
   check_sys
 
   if ! [[ -f "/usr/local/rvm/bin/rvm" ]]; then
-    if [[ "$INSTALL_TYPE" = "yum" || "$INSTALL_TYPE" = "apt-get" ]]; then
+    if [[ "$INSTALL_TYPE" = "yum" || "$INSTALL_TYPE" = "apt" ]]; then
       $GPG
     else
       $GPG2
@@ -94,7 +94,7 @@ check_rvm_env() {
   fi
   source '/etc/profile.d/rvm.sh'
   if ! [[ -f "/usr/local/rvm/rubies/ruby-$DEFAULT_STABLE_VERSION/bin/ruby" ]]; then
-    echo "Start installing Ruby, it might takes a few minutes."
+    echo -e "${Green}Start installing Ruby...${NC}"
     rvm install $DEFAULT_STABLE_VERSION
     sleep 2
   fi
@@ -107,16 +107,15 @@ check_rvm_env() {
 }
 
 build_posted() {
-
-  if [[ $INSTALL_TYPE = "apt-get" ]]; then
+  if [[ $INSTALL_TYPE = "apt" ]]; then
     rm -rf /var/www/html/*
     mv "_site"/* "/var/www/html/"
     elif [[ $INSTALL_TYPE = "yum" ]] || [[ $INSTALL_TYPE = "dnf" ]]; then
       rm -rf /usr/share/nginx/html/*
       mv "_site"/* "/usr/share/nginx/html/"
-       if [[ $INSTALL_TYPE = 'dnf' ]]; then
-            chcon -Rt httpd_sys_content_t "/usr/share/nginx/html/"
-       fi
+         if [[ $INSTALL_TYPE = 'dnf' ]]; then
+              chcon -Rt httpd_sys_content_t "/usr/share/nginx/html/"
+         fi
   else
     abort "$ERROR"
   fi
@@ -133,7 +132,7 @@ preview_url() {
 
 check_nginx() {
   if [[ -f "/usr/sbin/nginx" ]]; then
-    echo "Nginx is detected as installed, skip it."
+    echo -e "${Green}Nginx is detected as installed, skip it.${NC}"
   else
     if [[ $INSTALL_TYPE = "apt-get" ]]; then
         sudo $INSTALL_TYPE install nginx
