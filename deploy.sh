@@ -111,11 +111,12 @@ build_posted() {
   if [[ $INSTALL_TYPE = "apt-get" ]]; then
     rm -rf /var/www/html/*
     mv "_site"/* "/var/www/html/"
-
-    elif [[ $INSTALL_TYPE = "yum" ]]; then
+    elif [[ $INSTALL_TYPE = "yum" ]] || [[ $INSTALL_TYPE = "dnf" ]]; then
       rm -rf /usr/share/nginx/html/*
       mv "_site"/* "/usr/share/nginx/html/"
-      chcon -Rt httpd_sys_content_t "/usr/share/nginx/html/"
+       if [[ $INSTALL_TYPE = 'dnf' ]]; then
+            chcon -Rt httpd_sys_content_t "/usr/share/nginx/html/"
+       fi
   else
     abort "$ERROR"
   fi
