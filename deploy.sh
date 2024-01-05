@@ -95,7 +95,7 @@ check_rvm_env() {
   fi
   source '/etc/profile.d/rvm.sh'
   if ! [[ -f "/usr/local/rvm/rubies/ruby-$DEFAULT_STABLE_VERSION/bin/ruby" ]]; then
-    echo -e "${Green}Start installing Ruby...${NC}"
+    echo -e "${Green}Start installing Ruby ${DEFAULT_STABLE_VERSION}...${NC}"
     rvm install $DEFAULT_STABLE_VERSION
     sleep 2
   fi
@@ -135,11 +135,16 @@ check_nginx() {
   if [[ -f "/usr/sbin/nginx" ]]; then
     echo -e "${Green}Nginx is detected as installed, skip it.${NC}"
   else
-
+    if [[ "${ID}" = "centos" && "${VERSION_ID}" == 7 ]]; then
+      echo -e "${Green}Updating EPEL package due to detected is centos 7...${NC}"
+      sudo $INSTALL_TYPE install epel-release
+    fi
     echo -e "${Green}Start installing Nginx...${NC}"
     if [[ $INSTALL_TYPE = "apt-get" ]] || [[ $INSTALL_TYPE = "yum" ]]; then
         sudo $INSTALL_TYPE install nginx
         sudo $INSTALL_TYPE install firewalld
+        sudo systemctl enable firewalld
+        sudo systemctl start firewalld
     else
         sudo $INSTALL_TYPE install nginx
     fi
