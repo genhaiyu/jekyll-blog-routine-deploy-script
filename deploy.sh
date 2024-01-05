@@ -54,6 +54,7 @@ reload_bundle() {
   if [[ -d "./_site" ]]; then
     bundle clean --force
   fi
+  echo -e "${Green}Overriding Ruby ${DEFAULT_STABLE_VERSION} version to current environment.${NC}"
   rvm use $DEFAULT_STABLE_VERSION
   bundle install
 }
@@ -134,7 +135,9 @@ check_nginx() {
   if [[ -f "/usr/sbin/nginx" ]]; then
     echo -e "${Green}Nginx is detected as installed, skip it.${NC}"
   else
-    if [[ $INSTALL_TYPE = "apt-get" ]]; then
+
+    echo -e "${Green}Start installing Nginx...${NC}"
+    if [[ $INSTALL_TYPE = "apt-get" ]] || [[ $INSTALL_TYPE = "yum" ]]; then
         sudo $INSTALL_TYPE install nginx
         sudo $INSTALL_TYPE install firewalld
     else
@@ -150,9 +153,10 @@ check_nginx() {
 }
 
 build_pre() {
+  echo -e "${Green}Start building Jekyll...${NC}"
+  sleep 2
   rm -rf _site/
   jekyll build --source "$HOME"/"${PWD##*/}"
-  sleep 2
   if pgrep -x "nginx" >/dev/null; then
     sudo pkill -9 nginx
   fi
