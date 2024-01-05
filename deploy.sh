@@ -54,6 +54,7 @@ reload_bundle() {
   if [[ -d "./_site" ]]; then
     bundle clean --force
   fi
+  echo -e "${Green}Overriding Ruby ${DEFAULT_STABLE_VERSION} version to current environment.${NC}"
   rvm use $DEFAULT_STABLE_VERSION
   bundle install
 }
@@ -94,7 +95,7 @@ check_rvm_env() {
   fi
   source '/etc/profile.d/rvm.sh'
   if ! [[ -f "/usr/local/rvm/rubies/ruby-$DEFAULT_STABLE_VERSION/bin/ruby" ]]; then
-    echo -e "${Green}Start installing Ruby...${NC}"
+    echo -e "${Green}Start installing Ruby ${DEFAULT_STABLE_VERSION}...${NC}"
     rvm install $DEFAULT_STABLE_VERSION
     sleep 2
   fi
@@ -134,9 +135,16 @@ check_nginx() {
   if [[ -f "/usr/sbin/nginx" ]]; then
     echo -e "${Green}Nginx is detected as installed, skip it.${NC}"
   else
-    if [[ $INSTALL_TYPE = "apt-get" ]]; then
+    if [[ "${ID}" = "centos" && "${VERSION_ID}" == 7 ]]; then
+      echo -e "${Green}Updating EPEL package due to detected is centos 7...${NC}"
+      sudo $INSTALL_TYPE install epel-release
+    fi
+    echo -e "${Green}Start installing Nginx...${NC}"
+    if [[ $INSTALL_TYPE = "apt-get" ]] || [[ $INSTALL_TYPE = "yum" ]]; then
         sudo $INSTALL_TYPE install nginx
         sudo $INSTALL_TYPE install firewalld
+        sudo systemctl enable firewalld
+        sudo systemctl start firewalld
     else
         sudo $INSTALL_TYPE install nginx
     fi
@@ -150,9 +158,10 @@ check_nginx() {
 }
 
 build_pre() {
+  echo -e "${Green}Start building Jekyll...${NC}"
+  sleep 2
   rm -rf _site/
   jekyll build --source "$HOME"/"${PWD##*/}"
-  sleep 2
   if pgrep -x "nginx" >/dev/null; then
     sudo pkill -9 nginx
   fi
