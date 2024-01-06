@@ -39,6 +39,7 @@ check_sys() {
   source '/etc/os-release'
   if [[ "${ID}" = "centos" && "${VERSION_ID}" == 8 ]]; then
     GPG2="gpg2 --keyserver keys.openpgp.org $RVM_KEYS"
+    INSTALL_TYPE="yum"
   elif [[ "${ID}" = "centos" && "${VERSION_ID}" == 7 ]]; then
     change_keys
     INSTALL_TYPE="yum"
@@ -140,7 +141,7 @@ check_nginx() {
       sudo $INSTALL_TYPE install epel-release
     fi
     echo -e "${Green}Start installing Nginx...${NC}"
-    if [[ $INSTALL_TYPE = "apt-get" ]] || [[ $INSTALL_TYPE = "yum" ]]; then
+    if [[ $INSTALL_TYPE = "apt" ]] || [[ $INSTALL_TYPE = "yum" ]]; then
         sudo $INSTALL_TYPE install nginx
         sudo $INSTALL_TYPE install firewalld
         sudo systemctl enable firewalld
@@ -175,7 +176,7 @@ build_jekyll() {
   check_nginx
   preview_url
   echo -e "${Green}==> Jekyll blog has been successfully deployed!${NC}"
-  echo -e "${Blue}==> Here is the preview URL (ipv4): ${NC}\e[4m$preview\e[0m"
+  echo -e "${Blue}==> Preview URL (ipv4): ${NC}\e[4m$preview\e[0m"
 }
 
 build_jekyll
