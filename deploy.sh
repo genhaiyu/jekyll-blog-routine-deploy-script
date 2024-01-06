@@ -15,7 +15,7 @@ abort() {
 
 DEFAULT_STABLE_VERSION="3.1.0"
 INSTALL_TYPE="dnf"
-# Tested on Ubuntu 20.04/22.04.2 LTS
+# Tested on Ubuntu 20.04/22.04.2 LTS/23.04
 UBUNTU_VERSION="20.04"
 # Keys reference to https://rvm.io/rvm/security#install-our-keys
 RVM_KEYS="--recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB"
@@ -96,7 +96,7 @@ check_rvm_env() {
   fi
   source '/etc/profile.d/rvm.sh'
   if ! [[ -f "/usr/local/rvm/rubies/ruby-$DEFAULT_STABLE_VERSION/bin/ruby" ]]; then
-    echo -e "${Green}Start installing Ruby ${DEFAULT_STABLE_VERSION}...${NC}"
+    echo -e "${Green}Starting install Ruby ${DEFAULT_STABLE_VERSION}...${NC}"
     rvm install $DEFAULT_STABLE_VERSION
     sleep 2
   fi
@@ -140,7 +140,7 @@ check_nginx() {
       echo -e "${Green}Updating EPEL package due to detected is centos 7...${NC}"
       sudo $INSTALL_TYPE install epel-release
     fi
-    echo -e "${Green}Start installing Nginx...${NC}"
+    echo -e "${Green}Starting install Nginx...${NC}"
     if [[ $INSTALL_TYPE = "apt" ]] || [[ $INSTALL_TYPE = "yum" ]]; then
         sudo $INSTALL_TYPE install nginx
         sudo $INSTALL_TYPE install firewalld
@@ -159,7 +159,7 @@ check_nginx() {
 }
 
 build_pre() {
-  echo -e "${Green}Start building Jekyll...${NC}"
+  echo -e "${Green}Starting build Jekyll...${NC}"
   sleep 2
   rm -rf _site/
   jekyll build --source "$HOME"/"${PWD##*/}"
