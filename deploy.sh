@@ -55,7 +55,7 @@ reload_bundle() {
   if [[ -d "./_site" ]]; then
     bundle clean --force
   fi
-  echo -e "${Green}Using Ruby ${DEFAULT_STABLE_VERSION} overriding current environment.${NC}"
+  echo -e "${Green}Using Ruby ${DEFAULT_STABLE_VERSION} override current environment.${NC}"
   rvm use $DEFAULT_STABLE_VERSION
   bundle install
 }
