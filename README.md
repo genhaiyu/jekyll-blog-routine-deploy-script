@@ -9,9 +9,9 @@
 
 ## Documentation
 
-The script automatically checks and installs the dependencies of the Jekyll prerequisite environment on the new server,
-such as `RVM`, `Ruby`, `Nginx`.
-Otherwise, it only updates, builds, deploys, releases after each commit to GitHub.
+The script automatically checks and installs the dependencies of the Jekyll prerequisite environment on a new server, 
+includes `RVM`, `Ruby`, `Nginx`.
+Otherwise, it only updates, builds, deploys from repository.
 
 - Quick steps:
   * Copy the `A sample of Jekyll blog` repository to a server, or choose your preferred Jekyll.
