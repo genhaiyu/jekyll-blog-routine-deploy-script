@@ -24,8 +24,7 @@ curl -sSLO https://raw.githubusercontent.com/genhaiyu/jekyll-blog-routine-deploy
 
 Currently supported Linux systems: `Ubuntu 20.04 LTS x86/64`, `CentOS 7 x86/64`, `CentOS Stream 8 x86/64"`.
 
-Linux default open 80 port for http,
-after deployed a site on CentOS 7/8, should disable SELINUX setting in `/etc/selinux/config` file.
+After deployed a site on CentOS 7/8, should disable SELINUX setting in `/etc/selinux/config` file.
 If not, the page will give `403 Forbidden` error even you have done another way.
 
 ```markdown
