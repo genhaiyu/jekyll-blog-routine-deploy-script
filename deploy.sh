@@ -15,8 +15,8 @@ abort() {
 
 DEFAULT_STABLE_VERSION="3.1.0"
 INSTALL_TYPE="dnf"
-# Tested on Ubuntu 20.04 only
-UV="20.04"
+# Tested on Ubuntu 20.04/22.04.2 LTS
+UBUNTU_VERSION="20.04"
 # Keys reference to https://rvm.io/rvm/security#install-our-keys
 RVM_KEYS="--recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB"
 
@@ -43,7 +43,7 @@ check_sys() {
   elif [[ "${ID}" = "centos" && "${VERSION_ID}" == 7 ]]; then
     change_keys
     INSTALL_TYPE="yum"
-  elif [[ "${ID}" = "ubuntu" ]] && [[ "$(compare_version "${VERSION_ID}" $UV)" == 1 ]]; then
+  elif [[ "${ID}" = "ubuntu" ]] && [[ "$(compare_version "${VERSION_ID}" $UBUNTU_VERSION)" == 1 ]]; then
     INSTALL_TYPE="apt"
     change_keys
   else
@@ -55,7 +55,7 @@ reload_bundle() {
   if [[ -d "./_site" ]]; then
     bundle clean --force
   fi
-  echo -e "${Green}Overriding Ruby ${DEFAULT_STABLE_VERSION} version to current environment.${NC}"
+  echo -e "${Green}Using Ruby ${DEFAULT_STABLE_VERSION} override current environment.${NC}"
   rvm use $DEFAULT_STABLE_VERSION
   bundle install
 }
