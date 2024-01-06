@@ -1,4 +1,4 @@
-# A script to automatically deploy the Jekyll blog on Linux
+# A script to automatically deploy a Jekyll blog on Linux
 
 <img src="https://user-images.githubusercontent.com/17850202/264347872-8fd87cae-80dd-4721-b60a-dbc4578eadfc.png" width="260" alt="octojekyll">
 
@@ -22,7 +22,16 @@ Otherwise, it only updates, builds, deploys, releases after each commit to GitHu
 curl -sSLO https://raw.githubusercontent.com/genhaiyu/jekyll-blog-routine-deploy-script/master/deploy.sh && chmod a+x deploy.sh && bash deploy.sh
 ```
 
-Currently supported Linux systems: `Ubuntu 20.04 LTS x86/64`, `CentOS 7 x86/64`.
+Currently supported Linux systems: `Ubuntu 20.04 LTS x86/64`, `CentOS 7 x86/64`, `CentOS Stream 8 x86/64"`.
+
+Linux default open 80 port for http,
+after deployed a site on CentOS 7/8, should disable SELINUX setting in `/etc/selinux/config` file.
+If not, the page will give `403 Forbidden` error even you have done another way.
+
+```markdown
+# sudo vim /etc/selinux/config
+```
+Update SELINUX=enforcing to SELINUX=disabled, then reboot the system.
 
 [Full documentation](https://genhai.dev/customize-a-jekyll-blog-to-automatically-deploy-and-release-on-linux.html) for this script.
 
