@@ -14,8 +14,8 @@ such as `RVM`, `Ruby`, `Nginx`.
 Otherwise, it only updates, builds, deploys, releases after each commit to GitHub.
 
 - Quick steps:
-  * Copy the `A sample of Jekyll blog` repository to a server.
-    * This [A sample of Jekyll blog](https://github.com/genhaiyu/jekyll-example) is a basic Jekyll skeleton, can be released an example quickly.
+  * Copy the `A sample of Jekyll blog` repository to a server, or choose your own Jekyll.
+    * This [A sample of Jekyll blog](https://github.com/genhaiyu/jekyll-example) is a Jekyll skeleton for releases an example quickly purpose.
   * Go to the repository directory on the server, build this script to automatically initial or routine update.
 
 ```markdown
@@ -24,7 +24,7 @@ curl -sSLO https://raw.githubusercontent.com/genhaiyu/jekyll-blog-routine-deploy
 
 Currently supported Linux systems: `Ubuntu 20.04, 22.04.2 LTS, 23.04 x86/64`, `CentOS 7, Stream 8 x86/64`.
 
-After deployed a site on CentOS 7/8, should disable SELINUX setting in `/etc/selinux/config` file.
+If running a site on CentOS 7/8, should disable SELINUX setting in `/etc/selinux/config` file.
 If not, the page will give `403 Forbidden` error even you have done another way.
 
 ```markdown
