@@ -1,4 +1,4 @@
-# A script to automatically deploy the Jekyll blog on Linux
+# A script to automatically deploy a Jekyll blog on Linux
 
 <img src="https://user-images.githubusercontent.com/17850202/264347872-8fd87cae-80dd-4721-b60a-dbc4578eadfc.png" width="260" alt="octojekyll">
 
