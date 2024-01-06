@@ -14,9 +14,9 @@ such as `RVM`, `Ruby`, `Nginx`.
 Otherwise, it only updates, builds, deploys, releases after each commit to GitHub.
 
 - Quick steps:
-  * Copy the `A sample of Jekyll blog` repository to a server, or choose your own Jekyll.
+  * Copy the `A sample of Jekyll blog` repository to a server, or choose your preferred Jekyll.
     * This [A sample of Jekyll blog](https://github.com/genhaiyu/jekyll-example) is a Jekyll skeleton for releases an example quickly purpose.
-  * Go to the repository directory on the server, build this script to automatically initial or routine update.
+  * Enter the repository directory on the server, build this script to automatically initial or routine update.
 
 ```markdown
 curl -sSLO https://raw.githubusercontent.com/genhaiyu/jekyll-blog-routine-deploy-script/master/deploy.sh && chmod a+x deploy.sh && bash deploy.sh
