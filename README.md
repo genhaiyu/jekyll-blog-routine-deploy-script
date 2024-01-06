@@ -36,7 +36,7 @@ If not, the page will give `403 Forbidden` error even you have done another way.
 sudo vim /etc/selinux/config
 ```
 
-Update SELINUX=enforcing to SELINUX=disabled, then reboot the system.
+Update `SELINUX=enforcing` to `SELINUX=disabled` in `/etc/selinux/config` file, then reboot the system.
 
 [Full documentation](https://genhai.dev/customize-a-jekyll-blog-to-automatically-deploy-and-release-on-linux.html) for
 this script.
