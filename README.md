@@ -32,8 +32,6 @@ sudo vim /etc/selinux/config
 
 Update `SELINUX=enforcing` to `SELINUX=disabled` in `/etc/selinux/config` file, then reboot the system.
 
-[Full documentation](https://genhai.dev/customize-a-jekyll-blog-to-automatically-deploy-and-release-on-linux.html) for this script.
-
 ## License
 
 [![GNU General Public License v3.0](https://img.shields.io/github/license/genhaiyu/jekyll-blog-routine-deploy-script)](https://github.com/genhaiyu/jekyll-blog-routine-deploy-script/blob/master/LICENSE)
