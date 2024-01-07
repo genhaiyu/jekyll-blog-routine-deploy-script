@@ -28,7 +28,7 @@ deploy.sh && bash deploy.sh
 Currently supported Linux systems: `Ubuntu 20.04, 22.04.2 LTS, 23.04 x86/64`, `CentOS 7, Stream 8 x86/64`.
 
 If running a site on CentOS 7/8, should disable SELINUX setting in `/etc/selinux/config` file.
-If not, the page will give `403 Forbidden` error even you have done another way.
+If not, the page will give `403 Forbidden` error though you have done another way.
 
 ```markdown
 sudo vim /etc/selinux/config
