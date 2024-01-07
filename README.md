@@ -1,6 +1,6 @@
 # A script to automatically deploy a Jekyll blog on Linux
 
-<p quote align="center"><img src="https://user-images.githubusercontent.com/17850202/264347872-8fd87cae-80dd-4721-b60a-dbc4578eadfc.png" width="260" alt="octojekyll"></p>
+<p align="center"><img src="https://user-images.githubusercontent.com/17850202/264347872-8fd87cae-80dd-4721-b60a-dbc4578eadfc.png" width="260" alt="octojekyll"></p>
 
 [![](https://img.shields.io/github/actions/workflow/status/genhaiyu/jekyll-blog-routine-deploy-script/check-build.yml)](https://github.com/genhaiyu/jekyll-blog-routine-deploy-script/blob/master/.github/workflows/check-build.yml)
 [![](https://img.shields.io/badge/CentOS_7%2C_Stream_8_x86%2F64-2aa198?style=flat&logo=github&logoColor=72f54a)]()
@@ -8,7 +8,7 @@
 
 > After each commit to repository (including private GitHub Pages repository), go to the server to execute this script, which can automatically deploy and release a Jekyll blog.
 
-<p quote align="center"><img src="https://user-images.githubusercontent.com/17850202/265168014-41ed930f-dd74-4783-8104-c55f638b8338.gif" width="560" alt="deploying"/></p>
+<p align="center"><img src="https://user-images.githubusercontent.com/17850202/265168014-41ed930f-dd74-4783-8104-c55f638b8338.gif" width="560" alt="deploying"/></p>
 
 ## Documentation
 
