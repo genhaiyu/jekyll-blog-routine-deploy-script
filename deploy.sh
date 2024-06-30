@@ -62,7 +62,7 @@ reload_bundle() {
 
 check_dir() {
   if ! [[ -e "Gemfile" ]]; then
-    abort "Please running in Jekyll directory!"
+    abort "Please put this script into the Jekyll skeleton!"
   fi
   # Always refresh the gem
   rm -rf 'Gemfile.lock'
@@ -70,7 +70,7 @@ check_dir() {
 
 # Private repository, username and password required
 pull_repository_data() {
-  read -rp "Do you want to keep the Git repository up to date (y/n)? " update
+  read -rp "Would like to keep the Git repository up to date (y/n)? " update
   case "$update" in
   y | Y)
     git pull
