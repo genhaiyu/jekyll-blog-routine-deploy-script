@@ -6,7 +6,7 @@ RED='\033[0;31m'
 NC='\033[0m'
 Blue='\033[0;34m'
 Green='\033[0;32m'
-ERROR="The script doesn't support the current system!"
+ERROR="Not supported on current system."
 
 abort() {
   printf "${RED}%s${NC}\n" "$@"
@@ -62,7 +62,7 @@ reload_bundle() {
 
 check_dir() {
   if ! [[ -e "Gemfile" ]]; then
-    abort "Please put this script into the Jekyll skeleton!"
+    abort "Please place it in the Jekyll skeleton."
   fi
   # Always refresh the gem
   rm -rf 'Gemfile.lock'
@@ -175,7 +175,7 @@ build_jekyll() {
   build_pre
   check_nginx
   preview_url
-  echo -e "${Green}==> Jekyll blog has been successfully deployed!${NC}"
+  echo -e "${Green}==> Jekyll blog has been successfully deployed.${NC}"
   echo -e "${Blue}==> Preview URL (ipv4): ${NC}\e[4m$preview\e[0m"
 }
 
