@@ -55,7 +55,6 @@ reload_bundle() {
   if [[ -d "./_site" ]]; then
     bundle clean --force
   fi
-  echo -e "${Green}Using Ruby ${DEFAULT_STABLE_VERSION} override current environment.${NC}"
   rvm use $DEFAULT_STABLE_VERSION
   bundle install
 }
@@ -105,6 +104,7 @@ check_rvm_env() {
   if ! [[ -f "$jekyll_location" ]]; then
     gem install jekyll bundler
   fi
+  echo -e "${Green}Using Ruby ${DEFAULT_STABLE_VERSION} override current environment.${NC}"
   reload_bundle
 }
 
@@ -162,6 +162,7 @@ build_pre() {
   echo -e "${Green}Starting build Jekyll...${NC}"
   sleep 2
   rm -rf _site/
+  reload_bundle
   jekyll build --source "$HOME"/"${PWD##*/}"
   if pgrep -x "nginx" >/dev/null; then
     sudo pkill -9 nginx
