@@ -6,32 +6,33 @@
 [![](https://img.shields.io/badge/CentOS_7%2C_Stream_8_x86%2F64-2aa198?style=flat&logo=github&logoColor=72f54a)]()
 [![](https://img.shields.io/badge/Ubuntu_20.04%2C_22.04.2_LTS%2C_23.04_x86%2F64-bb7a02?style=flat&logo=github&logoColor=4e3e51)]()
 
-> After each commit to the repository (including private GitHub Pages repository), and execute this script in which on the remote server, 
-subsequently it will be deployed and release a Jekyll blog which depends on if it's an initial server or regularly update.
+> After each commit to the repository (including private GitHub Pages repository), and execute this script on the remote server, subsequently it will be deployed and release a Jekyll blog which depends on if it's an initial server or regularly updates.
 
 <p align="center"><img src="https://user-images.githubusercontent.com/17850202/265168014-41ed930f-dd74-4783-8104-c55f638b8338.gif" width="560" alt="deploying"/></p>
 
 ## Documentation
 
-Through running the script in a jekyll skeleton, and it checks and installs the prerequisites that include `RVM`, `Ruby` and `Nginx`. 
+Through running the script in a jekyll skeleton, it checks and installs the prerequisites that include `RVM`, `Ruby` and `Nginx`.
 Otherwise, it only updates, builds, deploys for routine.
 
 - Quick steps:
-    * Copy the [A Sample of Jekyll Blog](https://github.com/genhaiyu/jekyll-example) repository to a server, or choose your preferred Jekyll.
-    * Enter the repository directory on the server, build this script to automatically initial or for routine update.
+  * Copy the [A Sample of Jekyll Blog](https://github.com/genhaiyu/jekyll-example) repository to a server, or choose a preferred Jekyll.
+  * Enter the repository directory on the server, and build this script to automatically initial or for routine updates.
 
 ```markdown
 curl -sSLO https://raw.githubusercontent.com/genhaiyu/jekyll-blog-routine-deploy-script/master/deploy.sh && chmod a+x deploy.sh && bash deploy.sh
 ```
 
-If running a site on CentOS 7/8, should disable SELINUX setting in `/etc/selinux/config` file.
-If not, the page will give `403 Forbidden` error though you have done another way.
+## Encounter 403 on CentOS 7/8
+
+To deploy a site on CentOS 7/8, and the server should disable the SELINUX setting in the `/etc/selinux/config` file.
+Otherwise, the pages will give a `403 Forbidden` error.
 
 ```markdown
 sudo vim /etc/selinux/config
 ```
 
-Update `SELINUX=enforcing` to `SELINUX=disabled` in `/etc/selinux/config` file, then reboot the system.
+Update `SELINUX=enforcing` to `SELINUX=disabled` in the `/etc/selinux/config` file, then reboot the system.
 
 ## License
 
