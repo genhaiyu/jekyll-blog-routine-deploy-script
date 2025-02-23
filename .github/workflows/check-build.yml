@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Check out the example project
-        run: git clone https://github.com/genhaiyu/jekyll-example.git && chmod +x jekyll-example/
+        run: git clone https://github.com/genhaiyu/jekyll-example.git
 
       - name: Check project
         run: |
