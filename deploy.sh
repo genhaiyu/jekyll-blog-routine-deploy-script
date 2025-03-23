@@ -56,29 +56,30 @@ reload_bundle() {
     bundle clean --force
   fi
   rvm use $DEFAULT_STABLE_VERSION
+  echo -e "${Green}Using Ruby ${DEFAULT_STABLE_VERSION} override current environment.${NC}"
   bundle install
+}
+
+# Private repository, username and password required
+pull_git() {
+  read -rp "Would like to keep the Git repository up to date (y/n)? " update
+  case "$update" in
+  y | Y)
+    git pull
+    ;;
+  *)
+    echo "User canceled Git update, continuing."
+    ;;
+  esac
 }
 
 check_dir() {
   if ! [[ -e "Gemfile" ]]; then
     abort "Please place it in the Jekyll skeleton."
   fi
-  # Always refresh the gem
+  # Always refresh the gems
   rm -rf 'Gemfile.lock'
-}
-
-# Private repository, username and password required
-pull_repository_data() {
-  read -rp "Would like to keep the Git repository up to date (y/n)? " update
-  case "$update" in
-  y | Y)
-    git pull
-    sleep 2
-    ;;
-  *)
-    echo "User canceled Git update, continuing."
-    ;;
-  esac
+  pull_git
 }
 
 check_rvm_env() {
@@ -97,15 +98,12 @@ check_rvm_env() {
   if ! [[ -f "/usr/local/rvm/rubies/ruby-$DEFAULT_STABLE_VERSION/bin/ruby" ]]; then
     echo -e "${Green}Starting install Ruby ${DEFAULT_STABLE_VERSION}...${NC}"
     rvm install $DEFAULT_STABLE_VERSION
-    sleep 2
   fi
 
   jekyll_location="/usr/local/rvm/gems/ruby-$DEFAULT_STABLE_VERSION/bin/jekyll"
   if ! [[ -f "$jekyll_location" ]]; then
     gem install jekyll bundler
   fi
-  echo -e "${Green}Using Ruby ${DEFAULT_STABLE_VERSION} override current environment.${NC}"
-  reload_bundle
 }
 
 build_posted() {
@@ -149,7 +147,6 @@ check_nginx() {
     else
         sudo $INSTALL_TYPE install nginx
     fi
-    sleep 2
     sudo firewall-cmd --permanent --add-service=http
     sudo firewall-cmd --permanent --add-service=https
     sudo firewall-cmd --reload
@@ -160,7 +157,6 @@ check_nginx() {
 
 build_pre() {
   echo -e "${Green}Starting build Jekyll...${NC}"
-  sleep 2
   rm -rf _site/
   reload_bundle
   jekyll build --source "$HOME"/"${PWD##*/}"
@@ -172,7 +168,6 @@ build_pre() {
 build_jekyll() {
   echo -e "${Green}Checking for Jekyll related dependencies.${NC}"
   check_rvm_env
-  pull_repository_data
   build_pre
   check_nginx
   preview_url
